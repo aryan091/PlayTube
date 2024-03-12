@@ -9,5 +9,8 @@
   },
   "keywords": [],
   "author": "Aryan Daftari",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
 }
