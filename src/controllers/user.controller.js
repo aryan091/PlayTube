@@ -286,9 +286,39 @@ const refreshAccessToken = asyncHandler( async (req , res) => {
 
 })
 
+const changeCurrentPassword = asyncHandler( async (req , res) => {
+
+    const {oldPassword , newPassword} = req.body
+
+    // if user is accesing this route means it is logged in
+
+    // if it is logged in it goes from auth vefifyJWt middleware which add 
+    // req.user = user
+    const user = await User.findById(req.user._id)
+
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
+
+    if(!isPasswordCorrect)
+    {
+        throw new ApiError(400, "Old Password is incorrect")
+    }
+
+    user.password = newPassword
+    await user.save({validateBeforeSave: false})
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password changed successfully"))
+
+})
+
+const getCurrentUser = asyncHandler( async (req , res) => {
+})
+
 export { 
     registerUser,
     loginUser,
     logoutUser,
-    refreshAccessToken
+    refreshAccessToken,
+    changeCurrentPassword
  }
